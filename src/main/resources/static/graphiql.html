@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>GraphiQL</title>
+    <style>
+        html, body, #graphiql { height: 100%; margin: 0; }
+    </style>
+    <link rel="stylesheet" href="/graphiql/graphiql.min.css">
+</head>
+<body>
+<div id="graphiql">Loading...</div>
+<script src="/graphiql/react.min.js"></script>
+<script src="/graphiql/react-dom.min.js"></script>
+<script src="/graphiql/graphiql.min.js"></script>
+<script>
+    var defaultQuery = 'query {\n  productsByPriceAsc {\n    id\n    name\n    price\n    category {\n      name\n    }\n  }\n}\n';
+    function fetcher(params) {
+        return fetch('/graphql', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(params)
+        }).then(function (res) { return res.json(); });
+    }
+    ReactDOM.createRoot(document.getElementById('graphiql')).render(
+        React.createElement(GraphiQL, { fetcher: fetcher, defaultQuery: defaultQuery })
+    );
+</script>
+</body>
+</html>
